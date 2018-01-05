@@ -6,12 +6,15 @@ import {CommonModule} from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 
+import { SharedModule } from '../shared.module';
+
 @NgModule({
   imports: [
     DashboardRoutingModule,
     ChartsModule,
     BsDropdownModule,
-    CommonModule
+    CommonModule,
+    SharedModule
   ],
   declarations: [ DashboardComponent ]
 })

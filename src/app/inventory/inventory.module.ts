@@ -10,6 +10,7 @@ import {CommonModule} from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 import { Pipe, PipeTransform } from '@angular/core';
+import { SharedModule } from '../shared.module';
 
 @Pipe({
     name: 'searchFilter'
@@ -37,6 +38,7 @@ export class SearchFilter implements PipeTransform {
     CommonModule,
     ModalModule.forRoot(),
     FormsModule,
+    SharedModule
   ],
   declarations: [ InventoryComponent, SearchFilter ]
 })
