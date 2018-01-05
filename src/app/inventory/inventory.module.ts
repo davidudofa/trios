@@ -10,7 +10,6 @@ import {CommonModule} from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 import { Pipe, PipeTransform } from '@angular/core';
-import {TimeAgoPipe} from 'time-ago-pipe';
 
 @Pipe({
     name: 'searchFilter'
@@ -39,6 +38,6 @@ export class SearchFilter implements PipeTransform {
     ModalModule.forRoot(),
     FormsModule,
   ],
-  declarations: [ InventoryComponent, SearchFilter, TimeAgoPipe ]
+  declarations: [ InventoryComponent, SearchFilter ]
 })
 export class InventoryModule { }

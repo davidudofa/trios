@@ -26,6 +26,7 @@ import { HttpModule } from '@angular/http';
 import {NotificationsModule, NotificationsService} from 'angular4-notify';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
     AsideToggleDirective,
+    TimeAgoPipe
   ],
   providers: [{
     provide: LocationStrategy,

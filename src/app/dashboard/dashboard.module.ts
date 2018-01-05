@@ -5,7 +5,6 @@ import {CommonModule} from '@angular/common';
 
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import {TimeAgoPipe} from 'time-ago-pipe';
 
 @NgModule({
   imports: [
@@ -14,6 +13,6 @@ import {TimeAgoPipe} from 'time-ago-pipe';
     BsDropdownModule,
     CommonModule
   ],
-  declarations: [ DashboardComponent, TimeAgoPipe ]
+  declarations: [ DashboardComponent ]
 })
 export class DashboardModule { }
