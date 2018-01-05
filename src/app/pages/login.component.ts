@@ -11,7 +11,7 @@ export class LoginComponent {
 
   logindata = {username: '', userhash: ''};
   userdata: any = {};
-  constructor(private router: Router, private authservice: AuthService, private alert: NotificationsService) { }
+  constructor(public router: Router, public authservice: AuthService, public alert: NotificationsService) { }
 
   public dologin(logindata){
     //console.log(logindata);

@@ -35,7 +35,7 @@ export class InventoryComponent implements OnInit {
   public addModal;
 
 
-   constructor(private alert: NotificationsService, private auth: AuthService ) { }
+   constructor(public alert: NotificationsService, public auth: AuthService ) { }
 
 
   ngOnInit(): void {

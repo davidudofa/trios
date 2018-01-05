@@ -38,7 +38,7 @@ export class ProductionComponent implements OnInit {
   public submitModal;
 
 
-   constructor(private alert: NotificationsService, private auth: AuthService, private router: Router) {
+   constructor(public alert: NotificationsService, public auth: AuthService, public router: Router) {
    }
 
 

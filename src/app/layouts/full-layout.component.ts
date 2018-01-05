@@ -13,7 +13,7 @@ export class FullLayoutComponent implements OnInit {
   marketing:boolean = false;
   accounts:boolean = false;
 
-   constructor(private router: Router ) { }
+   constructor(public router: Router ) { }
 
   public disabled = false;
   public status: {isopen: boolean} = {isopen: false};

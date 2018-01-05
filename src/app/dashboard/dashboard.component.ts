@@ -8,7 +8,7 @@ export class DashboardComponent implements OnInit {
 
   logindata: any = {};
 
-   constructor(private router: Router ) { }
+   constructor(public router: Router ) { }
 
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
