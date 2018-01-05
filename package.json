@@ -13,7 +13,7 @@
     "build": "ng build && node server.js",
     "test": "ng test",
     "lint": "ng lint",
-    "postinstall": "ng build --aot -prod",
+    "postinstall": "ng build --aot -env=prod",
     "e2e": "ng e2e"
   },
   "private": true,
