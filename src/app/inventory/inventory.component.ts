@@ -82,12 +82,12 @@ export class InventoryComponent implements OnInit {
     this.auth.saveRaw(items).subscribe(results => {
       if(results.affectedRows === 1){
         //editModal.hide();
-        document.getElementById('closeeditraw').click();
+        document.getElementById('hideedit').click();
         this.ngOnInit();
         this.alert.addInfo("Update successful");
       }else{
         //editModal.hide();
-        document.getElementById('closeeditraw').click();
+        document.getElementById('hideedit').click();
         this.alert.addError('could not edit');
       }
     }, err =>{
@@ -99,12 +99,12 @@ export class InventoryComponent implements OnInit {
     this.auth.saveRaw(items).subscribe(results => {
       if(results.affectedRows === 1){
         //editModal.hide();
-        document.getElementById('closeeditproduct').click();
+        document.getElementById('hideedit').click();
         this.ngOnInit();
         this.alert.addInfo("Update successful");
       }else{
         //editModal.hide();
-        document.getElementById('closeeditproduct').click();
+        document.getElementById('hideedit').click();
         this.alert.addError('could not edit');
       }
     }, err =>{
@@ -139,12 +139,12 @@ export class InventoryComponent implements OnInit {
     this.auth.deleteRaw(items).subscribe(results=>{
       if(results.affectedRows === 1){
         //editModal.hide();
-        this.closeRaw();
+        document.getElementById('hidedelete').click();
         this.ngOnInit();
         this.alert.addInfo("Deleted successful");
 
       }else{
-        //editModal.hide();
+        document.getElementById('hidedelete').click();
         this.alert.addError('could not delete item');
       }
     }, err=>{
@@ -156,12 +156,12 @@ export class InventoryComponent implements OnInit {
     this.auth.deleteRaw(items).subscribe(results=>{
       if(results.affectedRows === 1){
         //editModal.hide();
-        this.closeProd();
+        document.getElementById('hidedelete').click();
         this.ngOnInit();
         this.alert.addInfo("Deleted successful");
 
       }else{
-        //editModal.hide();
+        document.getElementById('hidedelete').click();
         this.alert.addError('could not delete item');
       }
     }, err=>{
