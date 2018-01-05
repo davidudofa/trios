@@ -32,6 +32,7 @@
     "angular2-notifications": "^0.9.7",
     "angular4-notifications": "0.0.2",
     "angular4-notify": "^1.2.0",
+    "axios": "^0.17.1",
     "body-parser": "^1.18.2",
     "chart.js": "2.6.0",
     "core-js": "2.5.0",
