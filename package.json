@@ -6,6 +6,7 @@
   "url": "http://artsinscience.com",
   "copyright": "Copyright 2017 Trios Waters",
   "license": "MIT",
+  "main": "server.js",
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
