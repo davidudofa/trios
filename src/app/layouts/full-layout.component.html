@@ -1,0 +1,152 @@
+<header class="app-header navbar">
+  <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
+  <a class="navbar-brandi" href="#"></a>
+  <button class="navbar-toggler d-md-down-none" type="button" appSidebarToggler>&#9776;</button>
+  <ul class="nav navbar-nav d-md-down-none">
+    <li class="nav-item px-3">
+      <a class="nav-link" href="#">Dashboard</a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav ml-auto">
+    <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
+    </li>
+    <li class="nav-item dropdown" dropdown (onToggle)="toggled($event)">
+      <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
+        <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+        <span class="d-md-down-none">{{logindata.staff_id}}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+        <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+        <div class="divider"></div>
+        <a class="dropdown-item" href (click)="doLogout();"><i class="fa fa-lock"></i> Logout</a>
+      </div>
+    </li>
+    <button class="navbar-toggler d-md-down-none" type="button" appAsideMenuToggler>&#9776;</button>
+  </ul>
+</header>
+
+<div class="app-body">
+  <div class="sidebar">
+    <nav class="sidebar-nav" *ngIf="admin">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/dashboard']"><i class="icon-speedometer"></i> Dashboard </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-title">
+          Factory Stat
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/inventory']"><i class="icon-puzzle"></i> Inventory </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/production']"><i class="icon-star"></i> Production </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/widgets']"><i class="icon-calculator"></i> Sales</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/charts']"><i class="icon-pie-chart"></i> Accounts</a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-title">
+          Admin
+        </li>
+        <li class="nav-item nav-dropdown" appNavDropdown>
+          <a class="nav-link nav-dropdown-toggle" href="#" appNavDropdownToggle><i class="icon-star"></i> Requests</a>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/pages/login']"><i class="icon-star"></i> Petty Cash</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/pages/register']"><i class="icon-star"></i> Salary Advance</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/pages/404']"><i class="icon-star"></i> Days Off</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/pages/500']"><i class="icon-star"></i> Other</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="icon-graph"></i> Reports</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="icon-user"></i> Staff</a>
+        </li>
+      </ul>
+    </nav>
+
+    <nav class="sidebar-nav" *ngIf="inventory">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/dashboard']"><i class="icon-speedometer"></i> Dashboard </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-title">
+          Inventory Staff
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/inventory']"><i class="icon-puzzle"></i> Add New Item </a>
+        </li>
+        <li class="divider"></li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/production']"><i class="icon-star"></i> Item Requests </a>
+        </li>
+        <li class="divider"></li>
+        <li class="divider"></li>
+        <li class="nav-title">
+          Admin
+        </li>
+        <li class="nav-item nav-dropdown" appNavDropdown>
+          <a class="nav-link nav-dropdown-toggle" href="#" appNavDropdownToggle><i class="icon-star"></i> Requests</a>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/pages/login']"><i class="icon-star"></i> New Request</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/pages/register']"><i class="icon-star"></i> Pending</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/pages/404']"><i class="icon-star"></i> Approved</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/pages/500']"><i class="icon-star"></i> Cancelled</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+      <app-breadcrumbs></app-breadcrumbs>
+      <!-- Breadcrumb Menu-->
+      <li class="breadcrumb-menu d-md-down-none">
+        <!--div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+          <a class="btn" href="#"><i class="icon-speech"></i></a>
+          <a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>
+          <a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>
+        </div-->
+      </li>
+    </ol>
+
+    <div class="container-fluid">
+      <angular4-notify-notifications-container dismiss-on-timeout="5000"></angular4-notify-notifications-container>
+      <router-outlet></router-outlet>
+    </div><!-- /.conainer-fluid -->
+  </main>
+</div>
+
+<footer class="app-footer">
+  <a href="#">Trios-MS</a> &copy; 2017.
+  <span class="float-right">Powered by <a href="http://artsinscience.com">AiS</a></span>
+</footer>

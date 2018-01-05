@@ -1,0 +1,159 @@
+<div class="animated fadeIn">
+  <div class="animated fadeIn">
+
+      <span><button type="button" class="btn btn-info btn-clear" (click)="returnModal.show(); items=[]; chosentype=products">Request Raw Material</button></span>
+
+      <span><button type="button" class="btn btn-success btn-clear" (click)="submitModal.show();">Submit Finished Products</button></span>
+      <br/>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Latest Production Batch</h2>
+        <!-- Nav tabs -->
+        <div>
+          <div heading="Last Product Batch">
+
+            <div class="table-responsive"></div>
+            <input class="form-control" #searchText [(ngModel)]="searchProduct" placeholder="Search">
+            <table class="table table-responsive table-hover table-outline">
+              <thead class="thead-default">
+                <tr>
+                  <th class="text-center"><i class="icon-puzzle"></i></th>
+                  <th>Item Name</th>
+                  <th class="text-center">Type</th>
+                  <th>Qty</th>
+                  <th>Remarks</th>
+                  <th>Submitted</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of lastproduct| searchFilter:searchProduct">
+                  <td class="text-center">
+                    <div class="avatar">
+                      <img src="assets/img/products/{{product.item_img}}" onError="this.src='assets/img/raw.png'" class="img-avatar">
+                      <span class="avatar-status badge-success"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <div>{{product.item_name}}</div>
+                    <div class="small text-muted">
+
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <span>{{product.item_type}}</span>
+                  </td>
+                  <td>
+                    <span>{{product.qty}}</span>
+                  </td>
+                  <td>
+                    <span>{{product.remarks}}</span>
+                  </td>
+                  <td>
+                    <span>{{product.received_date | date: 'EEE, dd MMM yyyy'}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!--/.col-->
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #returnModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Request Raw Materials</h4>
+        <button type="button" id="hidegiveout" class="close" (click)="returnModal.hide()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="margin:auto; width:70%;" id="itemkind" *ngIf="!getdetails">
+          <div class="form-group row">
+            <label class="col-md-8 col-md-offset-2 form-control-label">Select Wanted Items</label>
+            <div class="col-md-8 col-md-offset-2">
+              <div class="checkbox" *ngFor='let item of raws'>
+                <label for="item.item_name">
+                  <input type="checkbox" id="item.id" name="item.item_name" (change)="addchosen(item, $event)"> {{item.item_name}} | {{item.item_type}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="itemdetails" *ngIf="getdetails">
+          <div class="row" *ngFor="let chosen of chosenitems">
+            <div class="form-group col-sm-6">
+              <label for="wgt">Item</label>
+              <input type="text" class="form-control" id="wgt" placeholder="Kg" [(ngModel)]="chosen.item_name" readonly>
+            </div>
+            <div class="form-group col-sm-2">
+              <label for="qty">Qty</label>
+              <input type="text" class="form-control" id="qty" placeholder="Qty" [(ngModel)]="chosen.qty">
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="qtylbl">Available</label>
+              <p><label><small><b>{{chosen.received_qty - chosen.total_given}} {{chosen.qty_label}}</b></small></label></p>
+            </div>
+          </div>
+        </div>
+        <button *ngIf="getdetails" (click)="previous()" type="button" class="btn btn-primary">Previous</button>
+        <button *ngIf="chosenitems?.length > 0 && !getdetails" (click)="next()" type="button" class="btn btn-primary">Next</button>
+        <button *ngIf="getdetails" (click)="placerequest()" type="button" class="btn btn-primary">Request</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Submit Finished Products</h4>
+        <button type="button" id="hidesubmit" class="close" (click)="submitModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="margin:auto; width:70%;" id="itemkind" *ngIf="!getsubmitdetails">
+          <div>
+          <div class="form-group row">
+            <label class="col-md-8 col-md-offset-2 form-control-label">Select Product to Submit</label>
+            <div class="col-md-8 col-md-offset-2">
+              <div class="checkbox" *ngFor='let item of products'>
+                <label for="item.item_name">
+                  <input type="checkbox" id="item.id" name="item.item_name" (change)="addselected(item, $event)"> {{item.item_name}} | {{item.item_type}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="itemdetails" *ngIf="getsubmitdetails">
+        <div class="row" *ngFor="let selected of selecteditems">
+          <div class="form-group col-sm-6">
+            <label for="wgt">Item</label>
+            <input type="text" class="form-control" id="wgt" placeholder="Kg" [(ngModel)]="selected.item_name" readonly>
+          </div>
+          <div class="form-group col-sm-2">
+            <label for="qty">Qty</label>
+            <input type="text" class="form-control" id="qty" placeholder="Qty" [(ngModel)]="selected.qty">
+          </div>
+          <div class="form-group col-sm-4">
+            <label for="qty">Remark</label>
+            <input type="text" class="form-control" id="damaged" placeholder="Remarks" [(ngModel)]="selected.remarks">
+          </div>
+        </div>
+    </div>
+
+      <button *ngIf="getsubmitdetails" (click)="submitprevious()" type="button" class="btn btn-primary">Previous</button>
+      <button *ngIf="selecteditems?.length > 0 && !getsubmitdetails" (click)="submitnext()" type="button" class="btn btn-primary">Next</button>
+      <button *ngIf="getsubmitdetails" (click)="placesubmission()" type="button" class="btn btn-primary">Request</button>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>

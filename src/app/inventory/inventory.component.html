@@ -1,0 +1,400 @@
+<div class="animated fadeIn">
+  <div class="animated fadeIn">
+
+      <span><button type="button" class="btn btn-success btn-clear" (click)="addModal.show(); items=[]; chosentype=products">Add New Item</button></span>
+
+    <div class="row">
+      <div class="col-md-12" *ngIf="!hidePanel">
+        <!-- Nav tabs -->
+        <tabset>
+          <tab heading="Raw" active="productTab" id="rawsTab">
+
+            <div class="table-responsive"></div>
+            <input class="form-control" #searchText [(ngModel)]="searchRaw" placeholder="Search">
+            <table class="table table-responsive table-hover table-outline">
+              <thead class="thead-default">
+                <tr>
+                  <th class="text-center"><i class="icon-puzzle"></i></th>
+                  <th>Item Name</th>
+                  <th class="text-center">Type</th>
+                  <th>Usage</th>
+                  <th>Activity</th>
+                  <th>action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let raw of raws | searchFilter:searchRaw" (click)="showDetails(raw);">
+                  <td class="text-center">
+                    <div class="avatar">
+                      <img src="assets/img/products/{{raw.item_img}}" onError="this.src='assets/img/raw.png'" class="img-avatar">
+                      <span class="avatar-status badge-success"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <div>{{raw.item_name}}</div>
+                    <div class="small text-muted">
+                      Received: {{raw.received_date | date: 'EEE, dd MMM'}}
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <span>{{raw.item_type}}</span>
+                  </td>
+                  <td>
+                    <div class="clearfix">
+                      <div class="float-left">
+                        <strong>{{raw.perc_usage| number:'1.0-1'}}%</strong>
+                      </div>
+                      <div class="float-right">
+                        <small class="text-muted">{{raw.received_date | date: 'dd/MM/yyyy'}} - {{raw.last_given_date | date: 'dd/MM/yyyy'}}</small>
+                      </div>
+                    </div>
+                    <div class="progress progress-xs">
+                      <div [ngClass]="getClass(raw.perc_usage)" role="progressbar" [style.width.%]="raw.perc_usage" aria-valuenow="raw.perc_usage" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="small text-muted">Last updated</div>
+                    <strong>{{raw.last_given_date | timeAgo}}</strong>
+                  </td>
+                  <td>
+                    <div class="btn-group" dropdown>
+                      <button type="button" (click)="$event.stopPropagation();" class="btn btn-outline btn-primary dropdown-toggle p-0" dropdownToggle>
+                        <i class="icon-settings"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                        <a class="dropdown-item" (click)="$event.stopPropagation(); edititem=raw;  editModal.show();">Edit</a>
+                        <a class="dropdown-item" (click)="$event.stopPropagation(); edititem=raw;  deleteModal.show(raw);">Delete</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </tab>
+          <tab heading="Products" active="rawTab" id="productsTab">
+
+            <div class="table-responsive"></div>
+            <input class="form-control" [(ngModel)]="searchProduct" placeholder="Search">
+            <table class="table table-responsive table-hover table-outline mb-0">
+              <thead class="thead-default">
+                <tr>
+                  <th class="text-center"><i class="icon-people"></i></th>
+                  <th>Product</th>
+                  <th class="text-center">Type</th>
+                  <th>Qty</th>
+                  <th class="text-center">Activity</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of products | searchFilter:searchProduct" (click)="showProductDetails(product)">
+                  <td class="text-center">
+                    <div class="avatar">
+                      <img src="assets/img/avatars/1.jpg" onError="this.src='assets/img/raw.png'" class="img-avatar" alt="admin@bootstrapmaster.com" src="assets/img/products/{{product.item_img}}">
+                      <span class="avatar-status badge-success"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <div>{{product.item_name}}</div>
+                  </td>
+                  <td class="text-center">
+                    <div>{{product.item_type}}</div>
+                  </td>
+                  <td>
+                    <div><b>{{product.received_qty}}</b></div>
+                  </td>
+                  <td class="text-center">
+                    <div class="small text-muted">Last updated</div>
+                    <strong>{{product.last_given_date | timeAgo}}</strong>
+                  </td>
+                  <td>
+                    <div class="btn-group" dropdown>
+                      <button type="button" (click)="$event.stopPropagation();" class="btn btn-outline btn-primary dropdown-toggle p-0" dropdownToggle>
+                        <i class="icon-settings"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                        <a class="dropdown-item" (click)="$event.stopPropagation(); edititem=product;  editModal.show();">Edit</a>
+                        <a class="dropdown-item" (click)="$event.stopPropagation(); edititem=product; deleteModal.show();">Delete</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </tab>
+        </tabset>
+      </div><!--/.col-->
+      <div class="col-md-12" *ngIf="showRaw">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Item Details: {{items.id}}</h4>
+            <button type="button" class="close" (click)="closeRaw();" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <img class="img-avatar img-circle img-responsive" src="assets/img/products/{{items.item_img}}" onError="this.src='assets/img/raw.png'">
+              </div>
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-body">
+                    <p>Item Name: <b>{{items.item_name}}</b></p>
+                    <p>Item Type: <b>{{items.item_type}}</b></p>
+                    <p>Item weight: <b>{{items.item_weight}}</b></p>
+                    <p>Description: <b>{{items.item_desc}}</b></p>
+                    <p>Stock Level: <b>{{items.received_qty - items.total_given}}&nbsp;{{items.qty_label}}</b><br/>
+                    <em><small>Last Updated on <b>{{items.last_given_date| date: 'EEE, dd MMM yyyy'}}</b></small></em></p>
+
+                      <div class="clearfix">
+                        <div class="float-left">
+                          Usage: <strong>{{items.perc_usage| number:'1.0-1'}}%</strong>
+                        </div>
+                        <div class="float-right">
+                          <small class="text-muted">{{items.received_date | date: 'dd/MM/yyyy'}} - {{items.last_given_date | date: 'dd/MM/yyyy'}}</small>
+                        </div>
+                      </div>
+                      <div class="progress progress-xs">
+                        <div [ngClass]="getClass(items.perc_usage)" role="progressbar" [style.width.%]="items.perc_usage" aria-valuenow="items.perc_usage" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    <p>Original Level: <b>{{items.received_qty}}&nbsp;{{items.qty_label}}</b><br/>
+                    <em><small>Received on <b>{{items.received_date| date: 'EEE, dd MMM yyyy'}}</b></small></em></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive"></div>
+            <h2>History</h2>
+            <table class="table table-responsive table-hover table-outline mb-0">
+              <thead class="thead-default">
+                <tr>
+                  <th class="text-center"><i class="icon-puzzle"></i></th>
+                  <th>Given To</th>
+                  <th class="text-center">Qty</th>
+                  <th>Date</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let usage of usages">
+                  <td class="text-center">
+                    <span>{{$indexOf}}</span>
+                  </td>
+                  <td>
+                    <div>{{usage.given_to}}</div>
+                  </td>
+                  <td class="text-center">
+                    <span>{{usage.qty}}</span>
+                  </td>
+                  <td>
+                    <span>{{usage.given_date | date: 'EEE, dd MMM yyyy'}}</span>
+                  </td>
+                  <td>
+                    <span>{{usage.reason}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="showProd">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Product Details: {{productitems.id}}</h4>
+            <button type="button" class="close" (click)="closeProd();" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <img class="img-avatar img-circle img-responsive" src="assets/img/products/{{productitems.item_img}}" onError="this.src='assets/img/raw.png'">
+              </div>
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-body">
+                    <p>Item Name: <b>{{productitems.item_name}}</b></p>
+                    <p>Item Type: <b>{{productitems.item_type}}</b></p>
+                    <p>Item weight: <b>{{productitems.item_weight}}</b></p>
+                    <p>Description: <b>{{productitems.item_desc}}</b></p>
+                    <p>Stock Level: <b>{{items.received_qty}}&nbsp;{{items.qty_label}}</b><br/>
+                    <em><small>Received on <b>{{items.received_date| date: 'EEE, dd MMM yyyy'}}</b></small></em></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive"></div>
+            <h2>History</h2>
+            <table class="table table-responsive table-hover table-outline mb-0">
+              <thead class="thead-default">
+                <tr>
+                  <th class="text-center"><i class="icon-puzzle"></i></th>
+                  <th>Given To</th>
+                  <th class="text-center">Qty</th>
+                  <th>Date</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let usage of usages">
+                  <td class="text-center">
+                    <span>{{$indexOf}}</span>
+                  </td>
+                  <td>
+                    <div>{{usage.given_to}}</div>
+                  </td>
+                  <td class="text-center">
+                    <span>{{usage.qty}}</span>
+                  </td>
+                  <td>
+                    <span>{{usage.given_date}}</span>
+                  </td>
+                  <td>
+                    <span>{{usage.reason}}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-warning modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Item ID: {{edititem.id}} </h4>
+        <button type="button" id="hidedelete" class="close" (click)="deleteModal.hide(); item=[];" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete {{edititem.item_name}}? This is not reversible.. &hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="deleteModal.hide(); edititem=[];">Close</button>
+        <button (click)="deleteRaw(edititem)" type="button" class="btn btn-primary">Delete</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Item ID: {{edititem.id}} </h4>
+        <button type="button" id="hideedit" class="close" (click)="editModal.hide(); items=[];" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="form-group">
+            <label for="company">Item Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Item name" [(ngModel)]="edititem.item_name">
+          </div>
+          <div class="form-group">
+            <label for="type">Item Type</label>
+            <input type="text" class="form-control" id="type" placeholder="Item Type" [(ngModel)]="edititem.item_type">
+          </div>
+          <div class="form-group">
+            <label for="desc">Item Description</label>
+            <input type="text" class="form-control" id="desc" placeholder="ItemDescription" [(ngModel)]="edititem.item_desc">
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <label for="wgt">Weight</label>
+              <input type="text" class="form-control" id="wgt" placeholder="Kg" [(ngModel)]="edititem.item_weight">
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="qty">Qty</label>
+              <input type="text" class="form-control" id="qty" placeholder="Qty" [(ngModel)]="edititem.received_qty">
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="qtylbl">Qty Label</label>
+              <input type="text" class="form-control" id="qtylbl" placeholder="Qty label" [(ngModel)]="edititem.qty_label">
+            </div>
+          </div><!--/.row-->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="editModal.hide(); edititem=[];">Close</button>
+        <button (click)="updateRaw(edititem)" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add New Item</h4>
+        <button type="button" id="hidenew" class="close" (click)="addModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+
+          <div class="form-group row">
+            <label class="col-md-3 form-control-label">Inventory Type</label>
+            <div class="col-md-9">
+              <label class="radio-inline" for="inline-radio1">
+                <input type="radio" id="inline-radio1" name="inline-radios" value="raw" [(ngModel)]="newitems.invtype" > Raw
+              </label>
+              <label class="radio-inline" for="inline-radio2">
+                <input type="radio" id="inline-radio2" name="inline-radios" value="product" [(ngModel)]="newitems.invtype"> Product
+              </label>
+              <label class="radio-inline" for="inline-radio3">
+                <input type="radio" id="inline-radio3" name="inline-radios" value="other" [(ngModel)]="newitems.invtype"> Other
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="company">Item Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Item name" [(ngModel)]="newitems.item_name">
+          </div>
+          <div class="form-group">
+            <label for="type">Item Type</label>
+            <input type="text" class="form-control" id="type" placeholder="Item Type" [(ngModel)]="newitems.item_type">
+          </div>
+          <div class="form-group">
+            <label for="desc">Item Description</label>
+            <input type="text" class="form-control" id="desc" placeholder="ItemDescription" [(ngModel)]="newitems.item_desc">
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <label for="wgt">Weight</label>
+              <input type="text" class="form-control" id="wgt" placeholder="Kg" [(ngModel)]="newitems.item_weight">
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="qty">Qty</label>
+              <input type="text" class="form-control" id="qty" placeholder="Qty" [(ngModel)]="newitems.received_qty">
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="qtylbl">Qty Label</label>
+              <input type="text" class="form-control" id="qtylbl" placeholder="Qty label" [(ngModel)]="newitems.qty_label">
+            </div>
+          </div><!--/.row-->
+          <div class="form-group">
+            <label for="desc">Received From</label>
+            <input type="text" class="form-control" id="desc" placeholder="Received From" [(ngModel)]="newitems.received_from">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="addModal.hide()">Close</button>
+        <button (click)="addRaw(newitems)" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
