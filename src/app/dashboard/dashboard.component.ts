@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../authservice.service';
+import {NotificationsService} from 'angular4-notify';
 
 @Component({
   templateUrl: 'dashboard.component.html'
@@ -7,8 +9,9 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
 
   logindata: any = {};
+  activities: any = [];
 
-   constructor(public router: Router ) { }
+   constructor(public router: Router, public auth: AuthService, public alert: NotificationsService ) { }
 
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
@@ -470,6 +473,13 @@ export class DashboardComponent implements OnInit {
     //console.log(this.logindata.staff_id);
     if (!this.logindata.staff_id){
       this.router.navigate(['/']);
+    }else{
+      this.auth.getActivity().subscribe(results => {
+        console.log(results);
+        this.activities = results;
+      }, err =>{
+        this.alert.addError('Server error. Please try again');
+      });
     }
 
   }

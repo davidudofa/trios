@@ -30,15 +30,21 @@ export class InventoryComponent implements OnInit {
   getdetails = false;
   chosenitems: any = [];
   edititem: any = {};
+  logindata: any = {};
   public deleteModal;
   public editModal;
   public addModal;
 
 
-   constructor(public alert: NotificationsService, public auth: AuthService ) { }
+   constructor(public alert: NotificationsService, public auth: AuthService, public router: Router ) { }
 
 
   ngOnInit(): void {
+    this.logindata = JSON.parse(sessionStorage.getItem('logindata'));
+    //console.log(this.logindata.staff_id);
+    if (!this.logindata.staff_id){
+      this.router.navigate(['/']);
+    }else{
     this.auth.getRaw().subscribe(results => {
       //console.log(results);
       this.raws = results;
@@ -51,6 +57,7 @@ export class InventoryComponent implements OnInit {
       this.alert.addError('Server error. Please try again');
     });
   }
+}
 
 
 
@@ -79,6 +86,7 @@ export class InventoryComponent implements OnInit {
   }
 
   public updateRaw(items) {
+    items.staff_id = this.logindata.staff_id;
     this.auth.saveRaw(items).subscribe(results => {
       if(results.affectedRows === 1){
         //editModal.hide();
@@ -96,6 +104,7 @@ export class InventoryComponent implements OnInit {
   }
 
   public updateProduct(items) {
+    items.staff_id = this.logindata.staff_id;
     this.auth.saveRaw(items).subscribe(results => {
       if(results.affectedRows === 1){
         //editModal.hide();
@@ -114,7 +123,7 @@ export class InventoryComponent implements OnInit {
 
   public addRaw(newitems) {
     //console.log(newitems);
-    newitems.username = 'Admin';
+    newitems.username = this.logindata.staff_id
     this.auth.saveRaw(newitems).subscribe(results => {
       //console.log(results)
       //if(results.affectedRows === 1){
@@ -136,6 +145,7 @@ export class InventoryComponent implements OnInit {
 
 
   public deleteRaw(items) {
+    items.staff_id = this.logindata.staff_id;
     this.auth.deleteRaw(items).subscribe(results=>{
       if(results.affectedRows === 1){
         //editModal.hide();
@@ -153,6 +163,7 @@ export class InventoryComponent implements OnInit {
   }
 
   public deleteProduct(items) {
+    items.staff_id = this.logindata.staff_id;
     this.auth.deleteRaw(items).subscribe(results=>{
       if(results.affectedRows === 1){
         //editModal.hide();

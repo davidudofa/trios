@@ -18,6 +18,10 @@ export class AuthService {
   getRaw(){
     return this.http.get('/api/raw/').map(res=> res.json());
   }
+
+  getActivity(){
+    return this.http.get('/api/activity/').map(res=> res.json());
+  }
   getProduct(){
     return this.http.get('/api/product/').map(res=> res.json());
   }

@@ -169,4 +169,15 @@ router.post('/login/',function(req,res,next){
         }
     });
 });
+
+router.get('/activity/', function(req,res,next){
+  Login.getActivity(function(err,rows){
+         if(err){
+             res.json(err);
+         }else{
+             res.json(rows);
+         }
+
+     });
+})
 module.exports=router;

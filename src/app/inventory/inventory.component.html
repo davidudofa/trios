@@ -7,7 +7,7 @@
       <div class="col-md-12" *ngIf="!hidePanel">
         <!-- Nav tabs -->
         <tabset>
-          <tab heading="Raw" active="productTab" id="rawsTab">
+          <tab heading="Raw" id="rawsTab">
 
             <div class="table-responsive"></div>
             <input class="form-control" #searchText [(ngModel)]="searchRaw" placeholder="Search">
@@ -71,7 +71,7 @@
               </tbody>
             </table>
           </tab>
-          <tab heading="Products" active="rawTab" id="productsTab">
+          <tab heading="Products" id="productsTab">
 
             <div class="table-responsive"></div>
             <input class="form-control" [(ngModel)]="searchProduct" placeholder="Search">
